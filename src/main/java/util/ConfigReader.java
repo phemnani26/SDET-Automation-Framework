@@ -1,4 +1,3 @@
-
 package util;
 
 import java.io.FileInputStream;
@@ -9,7 +8,7 @@ public class ConfigReader {
 
     private static Properties prop;
 
-    public ConfigReader() {
+    static {
 
         try {
 
@@ -27,8 +26,7 @@ public class ConfigReader {
         }
     }
 
-    public static String getProperty(String key) 
-    {
+    public static String getProperty(String key) {
 
         return prop.getProperty(key);
     }

@@ -5,25 +5,21 @@ import org.openqa.selenium.WebDriver;
 
 import util.WaitUtils;
 
-public class HomePage {
+public class HomePage extends BasePage{
 
-    WebDriver driver;
-    WaitUtils waitUtils;
+   
+	public HomePage(WebDriver driver) {
 
-    // Constructor
-    public HomePage(WebDriver driver) {
-
-        this.driver = driver;
-        waitUtils = new WaitUtils(driver);
-    }
+	    super(driver);
+	}
 
     // Locators
 
     // By Type = linkText
-    By careersLink = By.linkText("Careers");
+	private By careersLink = By.linkText("Careers");
 
     // Cookie accept button
-    By acceptCookiesButton =
+	private By acceptCookiesButton =
             By.xpath("//button[contains(text(),'Accept')]");
 
     // Open website

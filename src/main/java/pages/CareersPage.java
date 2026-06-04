@@ -5,24 +5,21 @@ import org.openqa.selenium.WebDriver;
 
 import util.WaitUtils;
 
-public class CareersPage {
+public class CareersPage extends BasePage {
 
-    WebDriver driver;
-    WaitUtils waitUtils;
+  
 
     // Constructor
     public CareersPage(WebDriver driver) {
 
-        this.driver = driver;
-        waitUtils = new WaitUtils(driver);
+        super(driver);
     }
-
     // By Type = id
-    By searchBox = By.id("typehead");
+   private By searchBox = By.id("typehead");
 
     // Exact job result from search popup
     // By Type = xpath
-    By searchedJob =
+   private By searchedJob =
             By.xpath("//li[contains(.,'QA Test Automation Developer')]");
 
     // Search Job

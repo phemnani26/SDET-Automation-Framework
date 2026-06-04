@@ -6,32 +6,31 @@ import org.openqa.selenium.WebDriver;
 
 import util.WaitUtils;
 
-public class JobDetailsPage {
+public class JobDetailsPage extends BasePage{
 
-    WebDriver driver;
-    WaitUtils waitUtils;
+  
 
     private String parentWindow;
 
-    public JobDetailsPage(WebDriver driver) {
+   
 
-        this.driver = driver;
-        this.waitUtils = new WaitUtils(driver);
-    }
+    	public JobDetailsPage(WebDriver driver) {
 
+    	    super(driver);
+    	}
     // ==========================
     // Locators
     // ==========================
 
     // Job Title
-    By jobTitle = By.xpath("//h1");
+    	private By jobTitle = By.xpath("//h1");
 
     // Job Location
-    By jobLocation =
+    	private By jobLocation =
             By.xpath("//span[contains(text(),'This job is available in')]");
 
     // Apply Now Button
-    By applyNowButton =
+    	private By applyNowButton =
             By.xpath("(//*[contains(text(),'Apply Now')])[last()]");
 
     // ==========================

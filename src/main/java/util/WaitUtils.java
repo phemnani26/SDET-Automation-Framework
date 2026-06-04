@@ -9,34 +9,54 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WaitUtils {
 
-    WebDriver driver;
-    WebDriverWait wait;
+    private WebDriver driver;
+    private WebDriverWait wait;
 
-    // Constructor
     public WaitUtils(WebDriver driver) {
 
         this.driver = driver;
 
-        wait = new WebDriverWait(driver,
+        wait = new WebDriverWait(
+                driver,
                 Duration.ofSeconds(
                         Integer.parseInt(
-                                ConfigReader.getProperty("explicitWait"))));
+                                ConfigReader.getProperty(
+                                        "explicitWait"))));
     }
 
-    // Wait for visible element
-    public void waitForElementVisible(By locator) {
+    public void waitForElementVisible(
+            By locator) {
 
         wait.until(
                 ExpectedConditions
-                        .visibilityOfElementLocated(locator));
+                        .visibilityOfElementLocated(
+                                locator));
     }
 
-    // Wait for clickable element
-    public void waitForElementClickable(By locator) {
+    public void waitForElementClickable(
+            By locator) {
 
         wait.until(
                 ExpectedConditions
-                        .elementToBeClickable(locator));
+                        .elementToBeClickable(
+                                locator));
     }
 
+    public void waitForElementPresent(
+            By locator) {
+
+        wait.until(
+                ExpectedConditions
+                        .presenceOfElementLocated(
+                                locator));
+    }
+
+    public void waitForTitleContains(
+            String title) {
+
+        wait.until(
+                ExpectedConditions
+                        .titleContains(
+                                title));
+    }
 }

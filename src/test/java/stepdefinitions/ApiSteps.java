@@ -1,4 +1,3 @@
-
 package stepdefinitions;
 
 import static io.restassured.RestAssured.given;
@@ -10,6 +9,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
+import util.Log;
 
 public class ApiSteps {
 
@@ -24,6 +24,8 @@ public class ApiSteps {
                 .get("https://echo.free.beeceptor.com/sample-request?author=beeceptor");
 
         response.prettyPrint();
+
+        Log.logger.info("GET request sent successfully");
     }
 
     @Then("validate GET response status code")
@@ -33,6 +35,8 @@ public class ApiSteps {
                 response.getStatusCode(),
                 200,
                 "GET Status Code Validation Failed");
+
+        Log.logger.info("GET Status Code validated successfully");
     }
 
     @And("validate path field")
@@ -42,9 +46,14 @@ public class ApiSteps {
                 response.jsonPath()
                         .getString("path");
 
-        System.out.println("PATH = " + path);
+        Log.logger.info("PATH = " + path);
 
-        Assert.assertNotNull(path);
+        Assert.assertEquals(
+                path,
+                "/sample-request?author=beeceptor",
+                "Path Validation Failed");
+
+        Log.logger.info("Path validated successfully");
     }
 
     @And("validate ip field")
@@ -54,9 +63,17 @@ public class ApiSteps {
                 response.jsonPath()
                         .getString("ip");
 
-        System.out.println("IP = " + ip);
+        Log.logger.info("IP = " + ip);
 
-        Assert.assertNotNull(ip);
+        Assert.assertNotNull(
+                ip,
+                "IP is null");
+
+        Assert.assertTrue(
+                ip.contains(":"),
+                "IP format validation failed");
+
+        Log.logger.info("IP validated successfully");
     }
 
     @And("validate headers")
@@ -66,7 +83,7 @@ public class ApiSteps {
                 response.jsonPath()
                         .getMap("headers"));
 
-        System.out.println("Headers validated");
+        Log.logger.info("Headers validated successfully");
     }
 
     @Given("user sends POST request")
@@ -80,6 +97,8 @@ public class ApiSteps {
                 .post("https://echo.free.beeceptor.com/sample-request?author=beeceptor");
 
         response.prettyPrint();
+
+        Log.logger.info("POST request sent successfully");
     }
 
     @Then("validate POST response status code")
@@ -89,6 +108,8 @@ public class ApiSteps {
                 response.getStatusCode(),
                 200,
                 "POST Status Code Validation Failed");
+
+        Log.logger.info("POST Status Code validated successfully");
     }
 
     @And("validate customer information")
@@ -98,9 +119,28 @@ public class ApiSteps {
                 response.jsonPath()
                         .getString("parsedBody.customer.name");
 
+        String email =
+                response.jsonPath()
+                        .getString("parsedBody.customer.email");
+
+        String phone =
+                response.jsonPath()
+                        .getString("parsedBody.customer.phone");
+
         Assert.assertEquals(
                 name,
                 "Jane Smith");
+
+        Assert.assertEquals(
+                email,
+                "janesmith@example.com");
+
+        Assert.assertEquals(
+                phone,
+                "1-987-654-3210");
+
+        Log.logger.info(
+                "Customer information validated successfully");
     }
 
     @And("validate payment information")
@@ -110,21 +150,74 @@ public class ApiSteps {
                 response.jsonPath()
                         .getString("parsedBody.payment.method");
 
+        String transactionId =
+                response.jsonPath()
+                        .getString("parsedBody.payment.transaction_id");
+
+        Float amount =
+                response.jsonPath()
+                        .getFloat("parsedBody.payment.amount");
+
+        String currency =
+                response.jsonPath()
+                        .getString("parsedBody.payment.currency");
+
         Assert.assertEquals(
                 method,
                 "credit_card");
+
+        Assert.assertEquals(
+                transactionId,
+                "txn_67890");
+
+        Assert.assertEquals(
+                amount,
+                111.97f);
+
+        Assert.assertEquals(
+                currency,
+                "USD");
+
+        Log.logger.info(
+                "Payment information validated successfully");
     }
 
     @And("validate product information")
     public void validate_product_information() {
 
-        String product =
+        String productId =
+                response.jsonPath()
+                        .getString("parsedBody.items[0].product_id");
+
+        String productName =
                 response.jsonPath()
                         .getString("parsedBody.items[0].name");
 
+        int quantity =
+                response.jsonPath()
+                        .getInt("parsedBody.items[0].quantity");
+
+        Float price =
+                response.jsonPath()
+                        .getFloat("parsedBody.items[0].price");
+
         Assert.assertEquals(
-                product,
+                productId,
+                "A101");
+
+        Assert.assertEquals(
+                productName,
                 "Wireless Headphones");
+
+        Assert.assertEquals(
+                quantity,
+                1);
+
+        Assert.assertEquals(
+                price,
+                79.99f);
+
+        Log.logger.info(
+                "Product information validated successfully");
     }
 }
-
